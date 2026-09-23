@@ -90,11 +90,13 @@ export function SiteFooter() {
                 </Text>
               </Pressable>
             </Link>
-            <Pressable onPress={() => Linking.openURL(brand.portal)}>
-              <Text className="text-sm text-[#475569] hover:text-[#0EA5E9] transition-colors">
-                {t.portal}
-              </Text>
-            </Pressable>
+            <Link href="/app" asChild>
+              <Pressable>
+                <Text className="text-sm text-[#475569] hover:text-[#0EA5E9] transition-colors">
+                  {t.portal}
+                </Text>
+              </Pressable>
+            </Link>
           </View>
         </View>
 

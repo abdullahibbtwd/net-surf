@@ -1,4 +1,15 @@
 export { Accordion } from './Accordion';
+export {
+  BottomNav,
+  CustomTabBar,
+  Icon,
+  PortalFrame,
+  SideNav,
+  TopAppBar,
+  portalColors,
+  useCustomTabBarClearance,
+  usePortalBreakpoint,
+} from './portal';
 export { Badge } from './Badge';
 export { Button } from './Button';
 export { Card } from './Card';

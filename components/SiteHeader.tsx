@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Linking, Platform, Pressable, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import { Link, usePathname, useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { brand } from '@/theme';
 import { Button } from './Button';
 import { Container } from './Container';
 import { useLanguage } from './Language';
@@ -116,7 +115,7 @@ export function SiteHeader() {
                   size="sm"
                   icon={<Ionicons name="log-in-outline" size={14} color="#FFFFFF" />}
                   iconPosition="left"
-                  onPress={() => Linking.openURL(brand.portal)}
+                  onPress={() => router.push('/app')}
                 />
               </View>
               <Pressable
@@ -168,7 +167,7 @@ export function SiteHeader() {
                   iconPosition="left"
                   onPress={() => {
                     setMobileMenuOpen(false);
-                    Linking.openURL(brand.portal);
+                    router.push('/app');
                   }}
                 />
               </View>
