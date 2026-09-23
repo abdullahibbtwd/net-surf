@@ -1,12 +1,14 @@
 import { useState, type ReactNode } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, Text, TextInput, View } from 'react-native';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame, portalColors } from '@/components/portal';
 
 type Band = '2.4' | '5';
 type Security = 'WPA2' | 'WPA3';
 
 export default function WifiConfigScreen() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [ssid, setSsid] = useState('NetSurf_5G_Home');
   const [password, setPassword] = useState('NetSurf-Home-2024');
@@ -25,9 +27,9 @@ export default function WifiConfigScreen() {
 
   return (
     <PortalFrame
-      title="NetSurf - Wi-Fi Configuration"
-      pageTitle="Wi-Fi Configuration"
-      subtitle="Advanced settings"
+      title={t.wifiTitle}
+      pageTitle={t.wifiPageTitle}
+      subtitle={t.advancedSettings}
       headerLeft={
         <Pressable
           accessibilityLabel="Back to speed test"
@@ -38,25 +40,23 @@ export default function WifiConfigScreen() {
         </Pressable>
       }
     >
-      <Text className="text-[14px] leading-5 text-[#64748B]">
-        Change your home Wi-Fi name, password, and band. Changes apply after you save.
-      </Text>
+      <Text className="text-[14px] leading-5 text-[#64748B]">{t.wifiIntro}</Text>
 
       {/* Network identity */}
-      <Section title="Network identity">
-        <FieldLabel label="Network name (SSID)" />
+      <Section title={t.networkIdentity}>
+        <FieldLabel label={t.networkName} />
         <TextInput
           value={ssid}
           onChangeText={setSsid}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholder="Network name"
+          placeholder={t.networkNamePlaceholder}
           placeholderTextColor="#94A3B8"
           className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-3 text-[15px] text-[#0F172A]"
         />
 
         <View className="mt-4">
-          <FieldLabel label="Password" />
+          <FieldLabel label={t.password} />
           <View className="flex-row items-center rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] pr-2">
             <TextInput
               value={password}
@@ -64,12 +64,12 @@ export default function WifiConfigScreen() {
               secureTextEntry={!showPassword}
               autoCapitalize="none"
               autoCorrect={false}
-              placeholder="Wi-Fi password"
+              placeholder={t.wifiPasswordPlaceholder}
               placeholderTextColor="#94A3B8"
               className="min-w-0 flex-1 px-3.5 py-3 text-[15px] text-[#0F172A]"
             />
             <Pressable
-              accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}
+              accessibilityLabel={showPassword ? t.hidePassword : t.showPassword}
               onPress={() => setShowPassword((v) => !v)}
               className="h-9 w-9 items-center justify-center rounded-lg active:bg-[#E2E8F0]"
             >
@@ -80,8 +80,8 @@ export default function WifiConfigScreen() {
       </Section>
 
       {/* Radio */}
-      <Section title="Radio">
-        <FieldLabel label="Band" />
+      <Section title={t.radio}>
+        <FieldLabel label={t.band} />
         <View className="flex-row rounded-xl bg-[#F1F5F9] p-1">
           {([
             { id: '2.4' as const, label: '2.4 GHz' },
@@ -107,20 +107,20 @@ export default function WifiConfigScreen() {
         </View>
 
         <View className="mt-4">
-          <FieldLabel label="Security type" />
+          <FieldLabel label={t.securityType} />
           <Pressable
             onPress={() => setSecurityOpen((v) => !v)}
             className="flex-row items-center justify-between rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-3 active:bg-[#F1F5F9]"
           >
             <Text className="text-[15px] font-medium text-[#0F172A]">
-              {security === 'WPA3' ? 'WPA3 (recommended)' : 'WPA2'}
+              {security === 'WPA3' ? t.wpa3Recommended : 'WPA2'}
             </Text>
             <Icon name={securityOpen ? 'chevron-up' : 'chevron-down'} size={18} color="#64748B" />
           </Pressable>
           {securityOpen ? (
             <View className="mt-2 overflow-hidden rounded-xl border border-[#E2E8F0] bg-white">
               {([
-                { id: 'WPA3' as const, label: 'WPA3 (recommended)' },
+                { id: 'WPA3' as const, label: t.wpa3Recommended },
                 { id: 'WPA2' as const, label: 'WPA2' },
               ]).map((option, i) => (
                 <Pressable
@@ -145,17 +145,17 @@ export default function WifiConfigScreen() {
       </Section>
 
       {/* Visibility & power */}
-      <Section title="Visibility & power">
+      <Section title={t.visibilityPower}>
         <ToggleRow
-          title="Hidden network"
-          subtitle="Do not broadcast the network name (SSID)"
+          title={t.hiddenNetwork}
+          subtitle={t.hiddenNetworkSub}
           value={hiddenNetwork}
           onToggle={() => setHiddenNetwork((v) => !v)}
         />
         <View className="my-1 h-px bg-[#E2E8F0]" />
         <ToggleRow
-          title="Wi-Fi network active"
-          subtitle="Turn the wireless radio on or off"
+          title={t.wifiActive}
+          subtitle={t.wifiActiveSub}
           value={wifiActive}
           onToggle={() => setWifiActive((v) => !v)}
           last
@@ -168,7 +168,7 @@ export default function WifiConfigScreen() {
       >
         <Icon name={saved ? 'check' : 'save'} size={18} color="#FFFFFF" />
         <Text className="text-[15px] font-semibold text-white">
-          {saved ? 'Changes saved' : 'Save changes'}
+          {saved ? t.changesSaved : t.saveChanges}
         </Text>
       </Pressable>
     </PortalFrame>

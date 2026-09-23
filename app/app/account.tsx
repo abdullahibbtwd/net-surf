@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame, portalColors, type PortalIcon } from '@/components/portal';
 
 const PROFILE = {
@@ -11,27 +12,29 @@ const PROFILE = {
   email: 'alex.petrov@email.bg',
 };
 
-const ACTIONS: {
-  icon: PortalIcon;
-  label: string;
-  href?: '/app/alerts';
-  destructive?: boolean;
-  onPress?: 'logout';
-}[] = [
-  { icon: 'mail', label: 'Change email' },
-  { icon: 'lock', label: 'Change password' },
-  { icon: 'bell', label: 'Notification preferences', href: '/app/alerts' },
-  { icon: 'log-out', label: 'Log out', destructive: true, onPress: 'logout' },
-];
-
 export default function AccountScreen() {
+  const { t } = useLanguage();
   const router = useRouter();
+
+  const actions: {
+    key: string;
+    icon: PortalIcon;
+    label: string;
+    href?: '/app/alerts';
+    destructive?: boolean;
+    onPress?: 'logout';
+  }[] = [
+    { key: 'changeEmail', icon: 'mail', label: t.changeEmail },
+    { key: 'changePassword', icon: 'lock', label: t.changePassword },
+    { key: 'notifPreferences', icon: 'bell', label: t.notifPreferences, href: '/app/alerts' },
+    { key: 'logOut', icon: 'log-out', label: t.logOut, destructive: true, onPress: 'logout' },
+  ];
 
   return (
     <PortalFrame
-      title="NetSurf - Account & Settings"
-      pageTitle="Account"
-      subtitle="Profile & preferences"
+      title={t.accountTitle}
+      pageTitle={t.account}
+      subtitle={t.accountSubtitle}
       headerLeft={
         <Pressable
           accessibilityLabel="Go back"
@@ -56,26 +59,29 @@ export default function AccountScreen() {
           </View>
           <View className="min-w-0 flex-1">
             <Text className="text-[17px] font-bold tracking-tight text-[#0F172A]">{PROFILE.name}</Text>
-            <Text className="mt-0.5 text-[13px] text-[#64748B]">Client #{PROFILE.clientNumber}</Text>
+            <Text className="mt-0.5 text-[13px] text-[#64748B]">
+              {t.clientHash}
+              {PROFILE.clientNumber}
+            </Text>
           </View>
         </View>
 
-        <ProfileRow icon="user" label="Full name" value={PROFILE.name} />
-        <ProfileRow icon="map-pin" label="Service address" value={PROFILE.address} />
-        <ProfileRow icon="phone" label="Phone" value={PROFILE.phone} />
-        <ProfileRow icon="hash" label="Client number" value={PROFILE.clientNumber} />
-        <ProfileRow icon="mail" label="Email" value={PROFILE.email} last />
+        <ProfileRow icon="user" label={t.fullName} value={PROFILE.name} />
+        <ProfileRow icon="map-pin" label={t.serviceAddressLabel} value={PROFILE.address} />
+        <ProfileRow icon="phone" label={t.phoneLabel} value={PROFILE.phone} />
+        <ProfileRow icon="hash" label={t.clientNumber} value={PROFILE.clientNumber} />
+        <ProfileRow icon="mail" label={t.emailLabel} value={PROFILE.email} last />
       </View>
 
       {/* Settings actions */}
       <View>
         <Text className="mb-2 px-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
-          Settings
+          {t.settings}
         </Text>
         <View className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm">
-          {ACTIONS.map((action, index) => {
+          {actions.map((action, index) => {
             const rowClass = `flex-row items-center gap-3 px-4 py-3.5 active:bg-[#F8FAFC] ${
-              index < ACTIONS.length - 1 ? 'border-b border-[#E2E8F0]' : ''
+              index < actions.length - 1 ? 'border-b border-[#E2E8F0]' : ''
             }`;
             const content = (
               <>
@@ -107,7 +113,7 @@ export default function AccountScreen() {
 
             if (action.href) {
               return (
-                <Link key={action.label} href={action.href} asChild>
+                <Link key={action.key} href={action.href} asChild>
                   <Pressable
                     accessibilityRole="button"
                     accessibilityLabel={action.label}
@@ -121,7 +127,7 @@ export default function AccountScreen() {
 
             return (
               <Pressable
-                key={action.label}
+                key={action.key}
                 accessibilityRole="button"
                 accessibilityLabel={action.label}
                 onPress={() => {

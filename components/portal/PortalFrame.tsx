@@ -1,6 +1,7 @@
 import { useEffect, useState, type PropsWithChildren, type ReactNode } from 'react';
 import Head from 'expo-router/head';
 import { Modal, Platform, Pressable, ScrollView, View } from 'react-native';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useCustomTabBarClearance } from './CustomTabBar';
 import { SideNav } from './SideNav';
 import { TopAppBar } from './TopAppBar';
@@ -86,7 +87,12 @@ export function PortalFrame({
             title={pageTitle}
             subtitle={subtitle}
             left={headerLeft}
-            right={headerRight}
+            right={
+              <View className="flex-row items-center gap-2">
+                <LanguageSwitcher />
+                {headerRight}
+              </View>
+            }
             showMenuButton={bp.isMobile && !headerLeft}
             onMenuPress={() => setDrawerOpen(true)}
             elevated

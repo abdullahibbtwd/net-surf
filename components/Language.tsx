@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo, useState, type PropsWithChildren } from 'react';
+import { portalCopy } from './portal/copy';
 
 export type Lang = 'en' | 'bg';
 
@@ -175,7 +176,7 @@ const copy = {
   },
 } as const;
 
-type Copy = (typeof copy)[Lang];
+type Copy = (typeof copy)[Lang] & (typeof portalCopy)[Lang];
 
 type LanguageContextValue = {
   lang: Lang;
@@ -187,7 +188,10 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: PropsWithChildren) {
   const [lang, setLang] = useState<Lang>('bg');
-  const value = useMemo(() => ({ lang, setLang, t: copy[lang] }), [lang]);
+  const value = useMemo(
+    () => ({ lang, setLang, t: { ...copy[lang], ...portalCopy[lang] } }),
+    [lang],
+  );
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 

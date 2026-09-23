@@ -12,6 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLanguage } from '@/components/Language';
 import { Icon, portalColors } from './icons';
 import { portalNavItems, type PortalNavItem } from './nav';
 
@@ -25,6 +26,7 @@ type BottomNavProps = {
 export function BottomNav({ fixed = true }: BottomNavProps) {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
+  const { t } = useLanguage();
   const bottomPad = Math.max(insets.bottom, 8);
 
   return (
@@ -55,14 +57,27 @@ export function BottomNav({ fixed = true }: BottomNavProps) {
         style={{ height: 64, paddingHorizontal: 20, justifyContent: 'space-between' }}
       >
         {portalNavItems.map((tab) => (
-          <BottomTab key={tab.label} item={tab} active={tab.match(pathname)} />
+          <BottomTab
+            key={tab.labelKey}
+            item={tab}
+            label={t[tab.labelKey]}
+            active={tab.match(pathname)}
+          />
         ))}
       </View>
     </View>
   );
 }
 
-function BottomTab({ item, active }: { item: PortalNavItem; active: boolean }) {
+function BottomTab({
+  item,
+  label,
+  active,
+}: {
+  item: PortalNavItem;
+  label: string;
+  active: boolean;
+}) {
   const progress = useSharedValue(active ? 1 : 0);
   const press = useSharedValue(0);
   const pop = useSharedValue(1);
@@ -110,7 +125,7 @@ function BottomTab({ item, active }: { item: PortalNavItem; active: boolean }) {
       <Pressable
         accessibilityRole="tab"
         accessibilityState={{ selected: active }}
-        accessibilityLabel={item.label}
+        accessibilityLabel={label}
         onPressIn={() => {
           press.value = withTiming(1, { duration: 80 });
         }}
@@ -179,7 +194,7 @@ function BottomTab({ item, active }: { item: PortalNavItem; active: boolean }) {
             labelStyle,
           ]}
         >
-          {item.shortLabel ?? item.label}
+          {label}
         </Animated.Text>
       </Pressable>
     </Link>

@@ -1,56 +1,49 @@
 import { useState } from 'react';
 import { Linking, Pressable, Text, View } from 'react-native';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame, portalColors } from '@/components/portal';
 
-const guides = [
-  {
-    id: 'wifi',
-    icon: 'wifi' as const,
-    title: 'Wi-Fi & Home Network',
-    subtitle: '5GHz setup, channel tips',
-    accent: true,
-    body: [
-      'Keep your NetSurf Dual-Band router at least 1 meter above floor level and away from thick concrete walls.',
-      'Connect Smart TVs and streaming consoles to NetSurf_5G_Home for gigabit throughput.',
-    ],
-  },
-  {
-    id: 'billing',
-    icon: 'credit-card' as const,
-    title: 'Billing & EasyPay Codes',
-    subtitle: 'Grace period, client codes',
-    body: [
-      'Invoices are generated on the 1st with payment grace period until the 25th. Pay at any EasyPay desk using subscriber code #8821940.',
-    ],
-  },
-  {
-    id: 'tv',
-    icon: 'monitor' as const,
-    title: '4K TV Box & EPG Guide',
-    subtitle: 'Stream reload, channel pairing',
-    body: [
-      'To clear the 4K IPTV stream cache, turn off the decoder power switch for 10 seconds, then reconnect via LAN port 2 on your optical gateway.',
-    ],
-  },
-  {
-    id: 'fiber',
-    icon: 'settings' as const,
-    title: 'Fiber Cable & LOS Warning',
-    subtitle: 'Yellow optical patch care',
-    body: [
-      'Do not sharply bend the yellow optical patch cord. If the LOS indicator blinks red, the optical laser connection requires field inspection.',
-    ],
-  },
-];
-
 export default function SupportScreen() {
+  const { t } = useLanguage();
   const [openId, setOpenId] = useState<string | null>('wifi');
+
+  const guides = [
+    {
+      id: 'wifi',
+      icon: 'wifi' as const,
+      title: t.guideWifiTitle,
+      subtitle: t.guideWifiSub,
+      accent: true,
+      body: [t.guideWifiBody1, t.guideWifiBody2],
+    },
+    {
+      id: 'billing',
+      icon: 'credit-card' as const,
+      title: t.guideBillingTitle,
+      subtitle: t.guideBillingSub,
+      body: [t.guideBillingBody],
+    },
+    {
+      id: 'tv',
+      icon: 'monitor' as const,
+      title: t.guideTvTitle,
+      subtitle: t.guideTvSub,
+      body: [t.guideTvBody],
+    },
+    {
+      id: 'fiber',
+      icon: 'settings' as const,
+      title: t.guideFiberTitle,
+      subtitle: t.guideFiberSub,
+      body: [t.guideFiberBody],
+    },
+  ];
 
   return (
     <PortalFrame
-      title="NetSurf - Support & Help"
-      pageTitle="Support & Help"
-      subtitle="Sofia, Mladost 4 (Online)"
+      title={t.supportTitle}
+      pageTitle={t.supportPageTitle}
+      subtitle={t.supportSubtitle}
       headerRight={
         <Pressable accessibilityLabel="Search" className="h-9 w-9 items-center justify-center rounded-xl">
           <Icon name="search" size={20} color="#334155" />
@@ -70,20 +63,18 @@ export default function SupportScreen() {
           </View>
           <View className="flex-row items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5">
             <View className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <Text className="text-[11px] font-semibold text-emerald-700">Assigned</Text>
+            <Text className="text-[11px] font-semibold text-emerald-700">{t.ticketAssigned}</Text>
           </View>
         </View>
-        <Text className="mb-1 text-[14px] font-semibold text-[#0F172A]">Wi-Fi 6 Router Upgrade Request</Text>
-        <Text className="mb-3 text-[12px] leading-snug text-[#475569]">
-          Field technician scheduled for optical gateway deployment & testing.
-        </Text>
+        <Text className="mb-1 text-[14px] font-semibold text-[#0F172A]">{t.ticketTitle}</Text>
+        <Text className="mb-3 text-[12px] leading-snug text-[#475569]">{t.ticketBody}</Text>
         <View className="flex-row items-center justify-between border-t border-[#E2E8F0] pt-2.5">
           <View className="flex-row items-center gap-1.5">
             <Icon name="user" size={16} color="#94A3B8" />
             <Text className="text-[12px] font-medium text-[#475569]">Nikolay Ivanov</Text>
           </View>
           <View className="flex-row items-center gap-1">
-            <Text className="text-[12px] font-semibold text-[#0EA5E9]">Track status</Text>
+            <Text className="text-[12px] font-semibold text-[#0EA5E9]">{t.trackStatus}</Text>
             <Icon name="chevron-right" size={14} color={portalColors.accent} />
           </View>
         </View>
@@ -96,44 +87,48 @@ export default function SupportScreen() {
             <View className="h-7 w-7 items-center justify-center rounded-lg bg-sky-50">
               <Icon name="zap" size={16} color={portalColors.accent} />
             </View>
-            <Text className="text-[14px] font-bold text-[#0F172A]">Hardware Diagnostics</Text>
+            <Text className="text-[14px] font-bold text-[#0F172A]">{t.hardwareDiag}</Text>
           </View>
-          <Text className="text-[11px] font-medium text-[#475569]">Auto-checked 2m ago</Text>
+          <Text className="text-[11px] font-medium text-[#475569]">{t.autoChecked}</Text>
         </View>
 
         <View className="flex-row gap-2.5">
           <View className="flex-1 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3">
             <View className="mb-1 flex-row items-center justify-between">
-              <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#475569]">Fiber ONT</Text>
+              <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#475569]">
+                {t.fiberOnt}
+              </Text>
               <View className="h-2 w-2 rounded-full bg-[#10B981]" />
             </View>
             <Text className="text-[13px] font-bold text-[#0F172A]">Huawei GPON</Text>
-            <Text className="mt-0.5 text-[11px] font-medium text-emerald-600">Synced (-18.2 dBm)</Text>
+            <Text className="mt-0.5 text-[11px] font-medium text-emerald-600">{t.syncedDbm}</Text>
           </View>
           <View className="flex-1 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3">
             <View className="mb-1 flex-row items-center justify-between">
               <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#475569]">
-                Gateway Ping
+                {t.gatewayPing}
               </Text>
               <Icon name="activity" size={14} color="#10B981" />
             </View>
             <View className="flex-row items-baseline gap-1">
               <Text className="text-[15px] font-bold text-[#0F172A]">3.8</Text>
-              <Text className="text-[11px] font-medium text-[#475569]">ms</Text>
+              <Text className="text-[11px] font-medium text-[#475569]">{t.ms}</Text>
             </View>
-            <Text className="mt-0.5 text-[11px] font-medium text-emerald-600">0% Packet Loss</Text>
+            <Text className="mt-0.5 text-[11px] font-medium text-emerald-600">{t.packetLossZero}</Text>
           </View>
         </View>
 
         <Pressable className="h-11 flex-row items-center justify-center gap-2 rounded-xl bg-[#0EA5E9] active:scale-[0.99]">
           <Icon name="refresh-cw" size={16} color="#FFFFFF" />
-          <Text className="text-[13px] font-semibold text-white">Run Auto-Troubleshoot</Text>
+          <Text className="text-[13px] font-semibold text-white">{t.runTroubleshoot}</Text>
         </Pressable>
       </View>
 
       {/* Direct channels */}
       <View className="gap-2.5">
-        <Text className="px-1 text-[12px] font-bold uppercase tracking-wider text-[#475569]">Direct Channels</Text>
+        <Text className="px-1 text-[12px] font-bold uppercase tracking-wider text-[#475569]">
+          {t.directChannels}
+        </Text>
 
         <View className="rounded-2xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
           <View className="mb-3 flex-row items-start justify-between">
@@ -142,17 +137,17 @@ export default function SupportScreen() {
                 <Icon name="message-circle" size={20} color={portalColors.accent} />
               </View>
               <View>
-                <Text className="text-[14px] font-bold text-[#0F172A]">Live Chat</Text>
-                <Text className="text-[12px] text-[#475569]">Bulgarian & English support</Text>
+                <Text className="text-[14px] font-bold text-[#0F172A]">{t.liveChat}</Text>
+                <Text className="text-[12px] text-[#475569]">{t.liveChatSub}</Text>
               </View>
             </View>
             <View className="flex-row items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5">
               <View className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <Text className="text-[11px] font-semibold text-emerald-700">~2 min wait</Text>
+              <Text className="text-[11px] font-semibold text-emerald-700">{t.waitTime}</Text>
             </View>
           </View>
           <Pressable className="h-10 flex-row items-center justify-center gap-2 rounded-xl bg-[#0EA5E9] active:scale-[0.99]">
-            <Text className="text-[13px] font-semibold text-white">Start Chat</Text>
+            <Text className="text-[13px] font-semibold text-white">{t.startChat}</Text>
             <Icon name="arrow-right" size={16} color="#FFFFFF" />
           </Pressable>
         </View>
@@ -160,24 +155,24 @@ export default function SupportScreen() {
         <ChannelRow
           icon="phone"
           title="0700 12 345"
-          badge="24/7 Toll-free"
-          subtitle="Bulgaria ISP National Dispatch"
-          actionLabel="Call"
+          badge={t.tollFree}
+          subtitle={t.nationalDispatch}
+          actionLabel={t.call}
           onAction={() => Linking.openURL('tel:070012345')}
         />
         <ChannelRow
           icon="calendar"
-          title="Field Technician"
-          subtitle="Fiber splicing & in-home check"
-          actionLabel="Book Slot"
+          title={t.fieldTech}
+          subtitle={t.fieldTechSub}
+          actionLabel={t.bookSlot}
         />
         <ChannelRow
           icon="map-pin"
-          title="Mladost 4 Branch"
-          badge="Until 20:00"
+          title={t.branchName}
+          badge={t.untilClose}
           badgeTone="success"
-          subtitle="Al. Malinov Blvd 78 • 1.2 km"
-          actionLabel="Map"
+          subtitle={t.branchSub}
+          actionLabel={t.map}
           actionAccent
         />
       </View>
@@ -185,8 +180,10 @@ export default function SupportScreen() {
       {/* Knowledge base */}
       <View className="gap-2.5">
         <View className="flex-row items-center justify-between px-0.5">
-          <Text className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">Knowledge Base</Text>
-          <Text className="text-[11px] text-[#475569]">4 Guides</Text>
+          <Text className="text-[12px] font-bold uppercase tracking-wider text-[#475569]">
+            {t.knowledgeBase}
+          </Text>
+          <Text className="text-[11px] text-[#475569]">{t.guidesCount}</Text>
         </View>
 
         <View className="overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-sm">
@@ -237,9 +234,7 @@ export default function SupportScreen() {
 
       <View className="flex-row items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 p-3">
         <Icon name="info" size={16} color={portalColors.accent} />
-        <Text className="flex-1 text-[11px] text-sky-900">
-          Mladost 4 fiber node telemetry active. Peak network traffic normal.
-        </Text>
+        <Text className="flex-1 text-[11px] text-sky-900">{t.telemetryNote}</Text>
       </View>
     </PortalFrame>
   );

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame, portalColors } from '@/components/portal';
 
 const MAX_SPEED = 1000;
 
 export default function SpeedScreen() {
+  const { t } = useLanguage();
   const [speed, setSpeed] = useState(845);
   const [testing, setTesting] = useState(false);
 
@@ -21,14 +23,16 @@ export default function SpeedScreen() {
     }, 1200);
   };
 
+  const deviceLabels = [t.deviceTvs, t.devicePhones, t.deviceConsole, t.deviceIot];
+
   return (
-    <PortalFrame title="NetSurf - Wi-Fi Speed Test" pageTitle="Wi-Fi Speed Test">
+    <PortalFrame title={t.speedTitle} pageTitle={t.speedPageTitle}>
       <View className="items-center">
         <View className="flex-row items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-white px-3 py-1.5 shadow-sm">
           <View className="h-2 w-2 rounded-full bg-[#006C49]" />
-          <Text className="text-[12px] font-medium text-[#0F172A]">Connected to NetSurf_5G_Home</Text>
+          <Text className="text-[12px] font-medium text-[#0F172A]">{t.connectedTo}</Text>
           <Text className="text-[10px] text-[#BEC8D2]">•</Text>
-          <Text className="text-[12px] text-[#475569]">Living Room Node</Text>
+          <Text className="text-[12px] text-[#475569]">{t.livingRoomNode}</Text>
         </View>
       </View>
 
@@ -36,7 +40,7 @@ export default function SpeedScreen() {
         <View className="mb-1 self-end">
           <View className="flex-row items-center gap-1 rounded-full border border-[#A7F3D0] bg-[#ECFDF5] px-2 py-0.5">
             <View className="h-1.5 w-1.5 rounded-full bg-[#006C49]" />
-            <Text className="text-[11px] font-semibold uppercase text-[#006C49]">Stable Fiber</Text>
+            <Text className="text-[11px] font-semibold uppercase text-[#006C49]">{t.stableFiber}</Text>
           </View>
         </View>
 
@@ -58,19 +62,19 @@ export default function SpeedScreen() {
               <Text className="text-[52px] font-extrabold leading-none text-[#0F172A]">
                 {testing ? '...' : speed}
               </Text>
-              <Text className="mt-1 text-[14px] font-medium text-[#475569]">Mbps Download</Text>
+              <Text className="mt-1 text-[14px] font-medium text-[#475569]">{t.mbpsDownload}</Text>
               <View className="mt-1 flex-row items-center gap-1">
                 <Icon name="shield" size={14} color="#059669" />
-                <Text className="text-[11px] font-bold uppercase tracking-wider text-[#059669]">Ultra Fast</Text>
+                <Text className="text-[11px] font-bold uppercase tracking-wider text-[#059669]">{t.ultraFast}</Text>
               </View>
             </View>
           </View>
         </View>
 
         <View className="mt-4 w-full flex-row gap-2 border-t border-[#E2E8F0] pt-4">
-          <StatWell label="Ping / Latency" value="5" unit="ms" />
-          <StatWell label="Jitter" value="1.2" unit="ms" />
-          <StatWell label="Upload" value="412" unit="Mbps" />
+          <StatWell label={t.pingLatency} value="5" unit={t.ms} />
+          <StatWell label={t.jitter} value="1.2" unit={t.ms} />
+          <StatWell label={t.upload} value="412" unit={t.mbps} />
         </View>
       </View>
 
@@ -83,7 +87,7 @@ export default function SpeedScreen() {
       >
         <Icon name="refresh-cw" size={20} color="#FFFFFF" />
         <Text className="text-[16px] font-semibold text-white">
-          {testing ? 'Testing Fiber Stream...' : 'Run New Speed Test'}
+          {testing ? t.testingFiber : t.runSpeedTest}
         </Text>
       </Pressable>
 
@@ -95,12 +99,12 @@ export default function SpeedScreen() {
             </View>
             <View className="flex-1">
               <View className="flex-row items-center gap-1.5">
-                <Text className="text-[14px] font-semibold text-[#0F172A]">Signal Strength</Text>
+                <Text className="text-[14px] font-semibold text-[#0F172A]">{t.signalStrength}</Text>
                 <View className="rounded-full border border-[#A7F3D0]/60 bg-[#ECFDF5] px-2 py-0.5">
-                  <Text className="text-[11px] font-bold uppercase text-[#006C49]">Optimal</Text>
+                  <Text className="text-[11px] font-bold uppercase text-[#006C49]">{t.optimal}</Text>
                 </View>
               </View>
-              <Text className="mt-0.5 text-[12px] text-[#475569]">Excellent (-48 dBm) • 5 of 5 Bars</Text>
+              <Text className="mt-0.5 text-[12px] text-[#475569]">{t.signalDetail}</Text>
             </View>
           </View>
           <View className="h-6 flex-row items-end gap-1 pr-1">
@@ -118,16 +122,16 @@ export default function SpeedScreen() {
               </View>
               <View>
                 <View className="flex-row items-center gap-2">
-                  <Text className="text-[14px] font-semibold text-[#0F172A]">Connected Devices</Text>
+                  <Text className="text-[14px] font-semibold text-[#0F172A]">{t.connectedDevices}</Text>
                   <View className="h-2 w-2 rounded-full bg-[#006C49]" />
                 </View>
-                <Text className="mt-0.5 text-[12px] text-[#475569]">14 Active on Current Node</Text>
+                <Text className="mt-0.5 text-[12px] text-[#475569]">{t.devicesActive}</Text>
               </View>
             </View>
-            <Text className="text-[12px] font-semibold text-[#475569]">Manage</Text>
+            <Text className="text-[12px] font-semibold text-[#475569]">{t.manage}</Text>
           </View>
           <View className="mt-3 flex-row flex-wrap gap-2 border-t border-[#E2E8F0] pt-3">
-            {['2 TVs', '4 Phones', '1 Console', '7 IoT'].map((label) => (
+            {deviceLabels.map((label) => (
               <View key={label} className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-1">
                 <Text className="text-[11px] font-semibold uppercase text-[#475569]">{label}</Text>
               </View>
@@ -140,11 +144,8 @@ export default function SpeedScreen() {
             <Icon name="zap" size={16} color="#8A5100" />
           </View>
           <View className="flex-1">
-            <Text className="text-[11px] font-bold uppercase tracking-wide text-[#0F172A]">Performance Tip</Text>
-            <Text className="mt-0.5 text-[14px] leading-5 text-[#475569]">
-              Keep your optical router elevated off the floor and away from thick concrete walls for full home
-              coverage.
-            </Text>
+            <Text className="text-[11px] font-bold uppercase tracking-wide text-[#0F172A]">{t.performanceTip}</Text>
+            <Text className="mt-0.5 text-[14px] leading-5 text-[#475569]">{t.performanceTipBody}</Text>
           </View>
         </View>
       </View>
@@ -152,7 +153,7 @@ export default function SpeedScreen() {
       <Link href="/app/wifi-config" asChild>
         <Pressable className="flex-row items-center justify-center gap-1.5 py-2 active:opacity-70">
           <Icon name="settings" size={14} color="#64748B" />
-          <Text className="text-[13px] font-semibold text-[#64748B]">Advanced settings</Text>
+          <Text className="text-[13px] font-semibold text-[#64748B]">{t.advancedSettings}</Text>
           <Icon name="chevron-right" size={14} color="#94A3B8" />
         </Pressable>
       </Link>

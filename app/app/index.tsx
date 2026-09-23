@@ -1,20 +1,22 @@
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame, portalColors, usePortalBreakpoint } from '@/components/portal';
 
 export default function PortalHomeScreen() {
+  const { t } = useLanguage();
   const bp = usePortalBreakpoint();
 
   return (
     <PortalFrame
-      title="NetSurf ISP - Customer Portal"
-      pageTitle={bp.isMobile ? 'NetSurf' : 'Dashboard'}
-      subtitle={bp.isMobile ? undefined : 'Sofia, Mladost 4 · Account #849201'}
+      title={t.portalHomeTitle}
+      pageTitle={bp.isMobile ? 'NetSurf' : t.dashboard}
+      subtitle={bp.isMobile ? undefined : t.homeSubtitleDesktop}
       headerRight={
         <Link href="/app/account" asChild>
           <Pressable
-            accessibilityLabel="Account settings"
+            accessibilityLabel={t.accountSettings}
             className="h-9 w-9 overflow-hidden rounded-full border border-[#E2E8F0] bg-[#E0F2FE] active:opacity-80 md:hidden"
           >
             <Image
@@ -30,12 +32,10 @@ export default function PortalHomeScreen() {
     >
       <View className="gap-1">
         <Text className="text-[24px] font-semibold leading-8 tracking-tight text-[#0F172A] md:text-[28px]">
-          Good afternoon, Alex
+          {t.goodAfternoon}
         </Text>
         <Text className="text-[14px] leading-5 text-[#64748B]">
-          {bp.isMobile
-            ? 'Sofia, Mladost 4 · Account #849201'
-            : 'Your fiber service is online and performing within plan.'}
+          {bp.isMobile ? t.homeSubtitleMobile : t.homeSubtitleDesktop}
         </Text>
       </View>
 
@@ -46,23 +46,23 @@ export default function PortalHomeScreen() {
               <View className="flex-row flex-wrap items-center gap-2 rounded-full border border-[#A7F3D0] bg-[#ECFDF5] px-3 py-1">
                 <View className="h-2 w-2 rounded-full bg-[#10B981]" />
                 <Text className="text-[13px] font-semibold leading-4 text-[#059669]">
-                  Ultra Fiber 1Gbps · Online
+                  {t.fiberOnline}
                 </Text>
               </View>
               <Icon name="wifi" size={20} color={portalColors.muted} />
             </View>
 
             <View className="flex-row rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC] p-3">
-              <MetricCell label="Download" value="942" unit="Mbps" icon="arrow-down" iconColor="#059669" />
+              <MetricCell label={t.download} value="942" unit={t.mbps} icon="arrow-down" iconColor="#059669" />
               <MetricCell
-                label="Upload"
+                label={t.upload}
                 value="890"
-                unit="Mbps"
+                unit={t.mbps}
                 icon="arrow-up"
                 iconColor={portalColors.accent}
                 border
               />
-              <MetricCell label="Latency" value="4" unit="ms" icon="clock" iconColor="#EAB308" />
+              <MetricCell label={t.latency} value="4" unit={t.ms} icon="clock" iconColor="#EAB308" />
             </View>
           </View>
 
@@ -72,14 +72,14 @@ export default function PortalHomeScreen() {
                 <View className="flex-row items-center gap-1.5 self-start rounded-lg bg-[#F1F5F9] px-2 py-1">
                   <Icon name="calendar" size={14} color={portalColors.accent} />
                   <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#0F172A]">
-                    Due in 6 days · 18 Nov
+                    {t.dueInDays}
                   </Text>
                 </View>
                 <Text className="pt-1 text-[16px] font-semibold leading-6 text-[#0F172A]">
-                  GigaHome + 180 TV Channels
+                  {t.planName}
                 </Text>
                 <Text className="text-[12px] leading-4 text-[#64748B]">
-                  34.90 BGN/mo · Optical FTTH Terminal Active
+                  {t.planMeta}
                 </Text>
               </View>
               <View className="items-end">
@@ -90,8 +90,8 @@ export default function PortalHomeScreen() {
 
             <View className="gap-1.5">
               <View className="flex-row justify-between">
-                <Text className="text-[12px] leading-4 text-[#64748B]">Data Usage</Text>
-                <Text className="text-[14px] font-semibold leading-5 text-[#0F172A]">420 GB / Unlimited</Text>
+                <Text className="text-[12px] leading-4 text-[#64748B]">{t.dataUsage}</Text>
+                <Text className="text-[14px] font-semibold leading-5 text-[#0F172A]">{t.dataUsageValue}</Text>
               </View>
               <View className="h-2 w-full overflow-hidden rounded-full bg-[#E2E8F0]">
                 <View className="h-2 w-[42%] rounded-full bg-[#0EA5E9]" />
@@ -101,7 +101,7 @@ export default function PortalHomeScreen() {
             <Link href="/app/billing" asChild>
               <Pressable className="h-12 flex-row items-center justify-center gap-2 rounded-xl bg-[#0EA5E9] active:opacity-90">
                 <Icon name="credit-card" size={18} color="#FFFFFF" />
-                <Text className="text-[14px] font-semibold text-white">Pay Bill (34.90 BGN)</Text>
+                <Text className="text-[14px] font-semibold text-white">{t.payBill}</Text>
               </Pressable>
             </Link>
           </View>
@@ -110,34 +110,34 @@ export default function PortalHomeScreen() {
         <View className={bp.isDesktop ? 'w-[340px]' : 'w-full'} style={{ gap: bp.sectionGap }}>
           <View className="gap-3">
             <Text className="px-0.5 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
-              Quick Actions
+              {t.quickActions}
             </Text>
             <View className="flex-row flex-wrap" style={{ gap: 12 }}>
               <QuickAction
                 href="/app/speed"
                 icon="activity"
-                title="Test Wi-Fi Speed"
-                subtitle="Run speed test"
+                title={t.actionSpeedTitle}
+                subtitle={t.actionSpeedSub}
                 highlighted
                 wide={bp.isDesktop}
               />
               <QuickAction
                 icon="refresh-cw"
-                title="Reboot Optical ONT"
-                subtitle="Restart terminal"
+                title={t.actionRebootTitle}
+                subtitle={t.actionRebootSub}
                 wide={bp.isDesktop}
               />
               <QuickAction
                 icon="monitor"
-                title="TV Channels Guide"
-                subtitle="180 interactive"
+                title={t.actionTvTitle}
+                subtitle={t.actionTvSub}
                 wide={bp.isDesktop}
               />
               <QuickAction
                 href="/app/support"
                 icon="message-circle"
-                title="Support Chat"
-                subtitle="24/7 Sofia NOC"
+                title={t.actionSupportTitle}
+                subtitle={t.actionSupportSub}
                 wide={bp.isDesktop}
               />
             </View>
@@ -150,8 +150,8 @@ export default function PortalHomeScreen() {
                   <Icon name="smartphone" size={20} color={portalColors.accent} />
                 </View>
                 <View>
-                  <Text className="text-[14px] font-semibold leading-5 text-[#0F172A]">8 Devices Connected</Text>
-                  <Text className="text-[12px] leading-4 text-[#64748B]">Wi-Fi 6 Mesh Network active</Text>
+                  <Text className="text-[14px] font-semibold leading-5 text-[#0F172A]">{t.devicesConnected}</Text>
+                  <Text className="text-[12px] leading-4 text-[#64748B]">{t.meshActive}</Text>
                 </View>
               </View>
               <Icon name="chevron-right" size={20} color={portalColors.muted} />

@@ -12,6 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLanguage } from '@/components/Language';
 import { Icon, portalColors } from './icons';
 import { portalNavItems, portalSecondaryLinks, type PortalNavItem } from './nav';
 
@@ -26,6 +27,7 @@ type SideNavProps = {
 export function SideNav({ compact = false, onNavigate, fullHeight = false }: SideNavProps) {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
+  const { t } = useLanguage();
   const width = compact ? 84 : 268;
   const isWeb = Platform.OS === 'web';
 
@@ -63,7 +65,7 @@ export function SideNav({ compact = false, onNavigate, fullHeight = false }: Sid
             {!compact ? (
               <View className="flex-1">
                 <Text className="text-[16px] font-bold tracking-tight text-[#0F172A]">NetSurf</Text>
-                <Text className="text-[12px] font-medium text-[#64748B]">Customer Portal</Text>
+                <Text className="text-[12px] font-medium text-[#64748B]">{t.customerPortal}</Text>
               </View>
             ) : null}
           </Pressable>
@@ -73,14 +75,15 @@ export function SideNav({ compact = false, onNavigate, fullHeight = false }: Sid
       <View className={`min-h-0 flex-1 ${compact ? 'px-2' : 'px-3'}`}>
         {!compact ? (
           <Text className="mb-2.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
-            Menu
+            {t.navMenu}
           </Text>
         ) : null}
         <View className="gap-1">
           {portalNavItems.map((item) => (
             <NavRow
-              key={item.label}
+              key={item.labelKey}
               item={item}
+              label={t[item.labelKey]}
               active={item.match(pathname)}
               compact={compact}
               onNavigate={onNavigate}
@@ -92,14 +95,15 @@ export function SideNav({ compact = false, onNavigate, fullHeight = false }: Sid
 
         {!compact ? (
           <Text className="mb-2.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8]">
-            Network
+            {t.navNetwork}
           </Text>
         ) : null}
         <View className="gap-1">
           {portalSecondaryLinks.map((item) => (
             <NavRow
-              key={item.label}
+              key={item.labelKey}
               item={item}
+              label={t[item.labelKey]}
               active={item.match(pathname)}
               compact={compact}
               onNavigate={onNavigate}
@@ -131,7 +135,7 @@ export function SideNav({ compact = false, onNavigate, fullHeight = false }: Sid
                   Alex Petrov
                 </Text>
                 <Text className="text-[11px] text-[#64748B]" numberOfLines={1}>
-                  Account #849201
+                  {t.accountNumber}
                 </Text>
               </View>
             ) : null}
@@ -145,11 +149,13 @@ export function SideNav({ compact = false, onNavigate, fullHeight = false }: Sid
 
 function NavRow({
   item,
+  label,
   active,
   compact,
   onNavigate,
 }: {
   item: PortalNavItem;
+  label: string;
   active: boolean;
   compact: boolean;
   onNavigate?: () => void;
@@ -193,7 +199,7 @@ function NavRow({
         onPress={onNavigate}
         accessibilityRole="button"
         accessibilityState={{ selected: active }}
-        accessibilityLabel={item.label}
+        accessibilityLabel={label}
         onPressIn={() => {
           press.value = withTiming(1, { duration: 90, easing: Easing.out(Easing.quad) });
         }}
@@ -262,7 +268,7 @@ function NavRow({
                 labelStyle,
               ]}
             >
-              {item.label}
+              {label}
             </Animated.Text>
           ) : null}
 

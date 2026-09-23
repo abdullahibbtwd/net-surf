@@ -1,13 +1,13 @@
 import type { Href } from 'expo-router';
 import type { ComponentProps } from 'react';
 import type { Feather } from '@expo/vector-icons';
+import type { PortalCopyKey } from './copy';
 
 export type PortalIcon = ComponentProps<typeof Feather>['name'];
 
 export type PortalNavItem = {
   href: Href;
-  label: string;
-  shortLabel?: string;
+  labelKey: PortalCopyKey;
   icon: PortalIcon;
   match: (pathname: string) => boolean;
   badge?: 'dot' | number;
@@ -16,33 +16,32 @@ export type PortalNavItem = {
 export const portalNavItems: PortalNavItem[] = [
   {
     href: '/app',
-    label: 'Home',
+    labelKey: 'navHome',
     icon: 'home',
     match: (p) => p === '/app' || p === '/app/',
   },
   {
     href: '/app/speed',
-    label: 'Speed',
-    shortLabel: 'Speed',
+    labelKey: 'navSpeed',
     icon: 'wifi',
     match: (p) => p.startsWith('/app/speed'),
   },
   {
     href: '/app/billing',
-    label: 'Billing',
+    labelKey: 'navBilling',
     icon: 'file-text',
     match: (p) => p.startsWith('/app/billing'),
   },
   {
     href: '/app/alerts',
-    label: 'Alerts',
+    labelKey: 'navAlerts',
     icon: 'bell',
     match: (p) => p.startsWith('/app/alerts') || p.startsWith('/app/status'),
     badge: 'dot',
   },
   {
     href: '/app/support',
-    label: 'Support',
+    labelKey: 'navSupport',
     icon: 'tool',
     match: (p) => p.startsWith('/app/support'),
   },
@@ -51,13 +50,13 @@ export const portalNavItems: PortalNavItem[] = [
 export const portalSecondaryLinks: PortalNavItem[] = [
   {
     href: '/app/status',
-    label: 'Service status',
+    labelKey: 'navStatus',
     icon: 'activity',
     match: (p) => p.startsWith('/app/status'),
   },
   {
     href: '/app/wifi-config',
-    label: 'Wi-Fi configuration',
+    labelKey: 'navWifi',
     icon: 'settings',
     match: (p) => p.startsWith('/app/wifi-config'),
   },

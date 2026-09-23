@@ -1,19 +1,21 @@
 import { useState, type ReactNode } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { useLanguage } from '@/components/Language';
 import { Icon, PortalFrame } from '@/components/portal';
 
 export default function AlertsScreen() {
+  const { t } = useLanguage();
   const [tab, setTab] = useState<'alerts' | 'prefs'>('alerts');
   const [prefs, setPrefs] = useState({ network: true, billing: true, offers: false });
 
   return (
     <PortalFrame
-      title="NetSurf - Notifications & Preferences"
-      pageTitle="Notifications"
+      title={t.alertsTitle}
+      pageTitle={t.notifications}
       headerRight={
         <Pressable>
-          <Text className="text-[13px] font-semibold text-[#0EA5E9]">Mark all read</Text>
+          <Text className="text-[13px] font-semibold text-[#0EA5E9]">{t.markAllRead}</Text>
         </Pressable>
       }
     >
@@ -27,7 +29,7 @@ export default function AlertsScreen() {
               tab === 'alerts' ? 'text-[#0F172A]' : 'text-[#475569]'
             }`}
           >
-            All Alerts
+            {t.allAlerts}
           </Text>
         </Pressable>
         <Pressable
@@ -39,7 +41,7 @@ export default function AlertsScreen() {
               tab === 'prefs' ? 'text-[#0F172A]' : 'text-[#475569]'
             }`}
           >
-            Preferences
+            {t.preferences}
           </Text>
         </Pressable>
       </View>
@@ -47,10 +49,12 @@ export default function AlertsScreen() {
       {tab === 'alerts' ? (
         <View>
           <View className="mb-2.5 flex-row items-center justify-between">
-            <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#475569]">Recent Alerts</Text>
+            <Text className="text-[11px] font-semibold uppercase tracking-wider text-[#475569]">
+              {t.recentAlerts}
+            </Text>
             <View className="flex-row items-center rounded-full border border-[#006C49] bg-[#6FFBBE] px-2 py-0.5">
               <View className="mr-1.5 h-1.5 w-1.5 rounded-full bg-[#006C49]" />
-              <Text className="text-[12px] text-[#002113]">Sofia East Node: Live</Text>
+              <Text className="text-[12px] text-[#002113]">{t.sofiaEastLive}</Text>
             </View>
           </View>
 
@@ -59,15 +63,15 @@ export default function AlertsScreen() {
               icon="check-circle"
               iconBg="bg-[#6CF8BB]"
               iconColor="#006C49"
-              title="Scheduled Maintenance Complete"
-              time="2h ago"
-              body="Mladost 4 node fiber upgrade finished at 04:30 AM. Speeds restored to 1 Gbps."
+              title={t.alertMaintTitle}
+              time={t.alertMaintTime}
+              body={t.alertMaintBody}
               footer={
                 <View className="mt-2.5 flex-row items-center gap-2">
                   <View className="rounded bg-[#EAEDFF] px-2 py-0.5">
                     <Text className="text-[12px] text-[#0F172A]">Node #ML4-SOF</Text>
                   </View>
-                  <Text className="text-[12px] font-medium text-[#006C49]">Verified Stable</Text>
+                  <Text className="text-[12px] font-medium text-[#006C49]">{t.verifiedStable}</Text>
                 </View>
               }
             />
@@ -76,18 +80,18 @@ export default function AlertsScreen() {
               icon="file-text"
               iconBg="bg-[#C9E6FF]"
               iconColor="#006591"
-              title="Invoice Generated for November"
-              time="Yesterday"
-              body="Monthly invoice #NET-849201 is ready. Amount: 34.90 лв."
+              title={t.alertInvoiceTitle}
+              time={t.alertInvoiceTime}
+              body={t.alertInvoiceBody}
               footer={
                 <View className="mt-3 flex-row gap-2">
                   <Link href="/app/billing" asChild>
                     <Pressable className="rounded-lg bg-[#0EA5E9] px-3 py-1">
-                      <Text className="text-[13px] font-semibold text-white">Pay Now</Text>
+                      <Text className="text-[13px] font-semibold text-white">{t.payNow}</Text>
                     </Pressable>
                   </Link>
                   <Pressable className="rounded-lg bg-[#EAEDFF] px-3 py-1">
-                    <Text className="text-[13px] font-semibold text-[#0F172A]">View PDF</Text>
+                    <Text className="text-[13px] font-semibold text-[#0F172A]">{t.viewPdf}</Text>
                   </Pressable>
                 </View>
               }
@@ -97,9 +101,9 @@ export default function AlertsScreen() {
               icon="wifi"
               iconBg="bg-[#EAEDFF]"
               iconColor="#006591"
-              title="Wi-Fi Signal Optimization"
-              time="3 days ago"
-              body="Your router detected channel interference and auto-switched to channel 48 for lower latency."
+              title={t.alertWifiTitle}
+              time={t.alertWifiTime}
+              body={t.alertWifiBody}
               footer={
                 <View className="mt-2.5 flex-row gap-4">
                   <Text className="text-[12px] text-[#475569]">12ms Latency</Text>
@@ -115,7 +119,7 @@ export default function AlertsScreen() {
                 <View className="h-7 w-7 items-center justify-center rounded-full bg-[#C9E6FF]">
                   <Icon name="activity" size={14} color="#006591" />
                 </View>
-                <Text className="text-[13px] font-semibold text-[#0F172A]">View live service status</Text>
+                <Text className="text-[13px] font-semibold text-[#0F172A]">{t.viewLiveStatus}</Text>
               </View>
               <Icon name="chevron-right" size={16} color="#475569" />
             </Pressable>
@@ -124,26 +128,26 @@ export default function AlertsScreen() {
       ) : (
         <View>
           <Text className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-[#475569]">
-            Notification Preferences
+            {t.notifPrefs}
           </Text>
           <View className="overflow-hidden rounded-xl border border-[#BEC8D2] bg-white">
             <PrefRow
-              title="Network & Outage Alerts"
-              subtitle="Critical service interruptions and repair updates"
+              title={t.prefNetwork}
+              subtitle={t.prefNetworkSub}
               value={prefs.network}
               onToggle={() => setPrefs((p) => ({ ...p, network: !p.network }))}
             />
             <View className="ml-3.5 h-px bg-[#BEC8D2]" />
             <PrefRow
-              title="Payment & Billing Reminders"
-              subtitle="Invoices and auto-pay receipts"
+              title={t.prefBilling}
+              subtitle={t.prefBillingSub}
               value={prefs.billing}
               onToggle={() => setPrefs((p) => ({ ...p, billing: !p.billing }))}
             />
             <View className="ml-3.5 h-px bg-[#BEC8D2]" />
             <PrefRow
-              title="Special Offers & Upgrades"
-              subtitle="New speed tiers, partner TV channels"
+              title={t.prefOffers}
+              subtitle={t.prefOffersSub}
               value={prefs.offers}
               onToggle={() => setPrefs((p) => ({ ...p, offers: !p.offers }))}
             />
@@ -154,7 +158,7 @@ export default function AlertsScreen() {
               <View className="h-7 w-7 items-center justify-center rounded-full bg-[#C9E6FF]">
                 <Icon name="message-circle" size={14} color="#006591" />
               </View>
-              <Text className="text-[13px] font-semibold text-[#0F172A]">Need SMS dispatch notifications?</Text>
+              <Text className="text-[13px] font-semibold text-[#0F172A]">{t.needSms}</Text>
             </View>
             <Icon name="chevron-right" size={16} color="#475569" />
           </Pressable>

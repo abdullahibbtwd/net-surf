@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLanguage } from '@/components/Language';
 import { Icon } from './icons';
 import type { PortalIcon } from './nav';
 import { usePortalBreakpoint } from './usePortalBreakpoint';
@@ -42,22 +43,30 @@ export type CustomTabBarProps = {
 
 type TabMeta = {
   icon: PortalIcon;
-  label: string;
   badge?: boolean;
 };
 
 const TAB_META: Record<string, TabMeta> = {
-  index: { icon: 'home', label: 'Home' },
-  speed: { icon: 'wifi', label: 'Speed' },
-  billing: { icon: 'file-text', label: 'Billing' },
-  alerts: { icon: 'bell', label: 'Alerts', badge: true },
-  support: { icon: 'tool', label: 'Support' },
+  index: { icon: 'home' },
+  speed: { icon: 'wifi' },
+  billing: { icon: 'file-text' },
+  alerts: { icon: 'bell', badge: true },
+  support: { icon: 'tool' },
+};
+
+const TAB_LABEL_KEYS: Record<string, 'navHome' | 'navSpeed' | 'navBilling' | 'navAlerts' | 'navSupport'> = {
+  index: 'navHome',
+  speed: 'navSpeed',
+  billing: 'navBilling',
+  alerts: 'navAlerts',
+  support: 'navSupport',
 };
 
 /**
  * Floating tab bar — active tab uses color + scale only (no fill behind icon).
  */
 export function CustomTabBar({ state, descriptors, navigation }: CustomTabBarProps) {
+  const { t } = useLanguage();
   const insets = useSafeAreaInsets();
   const bp = usePortalBreakpoint();
 
@@ -86,14 +95,9 @@ export function CustomTabBar({ state, descriptors, navigation }: CustomTabBarPro
         <View style={styles.bar}>
           {visibleRoutes.map((route, visibleIndex) => {
             const focused = visibleIndex === activeVisibleIndex;
-            const meta = TAB_META[route.name] ?? { icon: 'circle' as PortalIcon, label: route.name };
-            const { options } = descriptors[route.key];
-            const label =
-              typeof options.tabBarLabel === 'string'
-                ? options.tabBarLabel
-                : typeof options.title === 'string'
-                  ? options.title
-                  : meta.label;
+            const meta = TAB_META[route.name] ?? { icon: 'circle' as PortalIcon };
+            const labelKey = TAB_LABEL_KEYS[route.name];
+            const label = labelKey ? t[labelKey] : route.name;
 
             const onPress = () => {
               const event = navigation.emit({
