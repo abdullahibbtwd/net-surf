@@ -1,8 +1,16 @@
 import { Image } from 'expo-image';
-import { Link } from 'expo-router';
+import { Link, type Href } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 import { useLanguage } from '@/components/Language';
-import { Icon, PortalFrame, portalColors, usePortalBreakpoint } from '@/components/portal';
+import {
+  Icon,
+  PartnerBanner,
+  PortalFrame,
+  PromoCarousel,
+  portalColors,
+  usePortalBreakpoint,
+  type PortalIcon,
+} from '@/components/portal';
 
 export default function PortalHomeScreen() {
   const { t } = useLanguage();
@@ -64,6 +72,12 @@ export default function PortalHomeScreen() {
               />
               <MetricCell label={t.latency} value="4" unit={t.ms} icon="clock" iconColor="#EAB308" />
             </View>
+
+            <View className="mt-3 flex-row gap-2">
+              <CardOption href="/app/speed" icon="activity" label={t.optSpeedTest} />
+              <CardOption href="/app/wifi-config" icon="settings" label={t.optWifi} />
+              <CardOption href="/app/status" icon="bar-chart-2" label={t.optStatus} />
+            </View>
           </View>
 
           <View className="gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm">
@@ -104,7 +118,15 @@ export default function PortalHomeScreen() {
                 <Text className="text-[14px] font-semibold text-white">{t.payBill}</Text>
               </Pressable>
             </Link>
+
+            <View className="flex-row gap-2">
+              <CardOption href="/app/billing" icon="file-text" label={t.optInvoices} />
+              <CardOption href="/app/billing" icon="repeat" label={t.optAutoPay} />
+              <CardOption href="/packages" icon="trending-up" label={t.optChangePlan} />
+            </View>
           </View>
+
+          <PromoCarousel />
         </View>
 
         <View className={bp.isDesktop ? 'w-[340px]' : 'w-full'} style={{ gap: bp.sectionGap }}>
@@ -157,6 +179,8 @@ export default function PortalHomeScreen() {
               <Icon name="chevron-right" size={20} color={portalColors.muted} />
             </Pressable>
           </Link>
+
+          <PartnerBanner />
         </View>
       </View>
     </PortalFrame>
@@ -189,6 +213,19 @@ function MetricCell({
         <Text className="text-[12px] leading-4 text-[#64748B]">{unit}</Text>
       </View>
     </View>
+  );
+}
+
+function CardOption({ href, icon, label }: { href: Href; icon: PortalIcon; label: string }) {
+  return (
+    <Link href={href} asChild>
+      <Pressable className="flex-1 items-center justify-center gap-1 rounded-xl border border-[#E2E8F0] bg-white px-0.5 py-2.5 active:bg-[#F1F5F9]">
+        <Icon name={icon} size={16} color={portalColors.accent} />
+        <Text className="text-[11px] font-semibold text-[#0F172A]" numberOfLines={1}>
+          {label}
+        </Text>
+      </Pressable>
+    </Link>
   );
 }
 
